@@ -1,0 +1,9 @@
+# Project-specific ignores
+data/*
+!data/.gitkeep
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# OS
+Thumbs.db
