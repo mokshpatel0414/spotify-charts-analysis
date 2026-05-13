@@ -5,6 +5,7 @@ Run locally with: streamlit run app/streamlit_app.py
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from pathlib import Path
 
 # Page setup
 st.set_page_config(
@@ -14,11 +15,13 @@ st.set_page_config(
 )
 
 # Load data (cached so it only happens once per session)
+DATA_DIR = Path(__file__).parent.parent / "data"
+
 @st.cache_data
 def load_data():
-    q1 = pd.read_csv("data/01_market_concentration.csv")
-    q2 = pd.read_csv("data/02_song_lifecycle_by_era.csv")
-    q3 = pd.read_csv("data/03_artist_dominance.csv")
+    q1 = pd.read_csv(DATA_DIR / "01_market_concentration.csv")
+    q2 = pd.read_csv(DATA_DIR / "02_song_lifecycle_by_era.csv")
+    q3 = pd.read_csv(DATA_DIR / "03_artist_dominance.csv")
     return q1, q2, q3
 
 q1, q2, q3 = load_data()
