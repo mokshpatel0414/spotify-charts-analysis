@@ -87,7 +87,8 @@ tab1, tab2, tab3 = st.tabs([
 with tab1:
     st.subheader("Asia listens to fewer artists, Europe listens to more")
     st.markdown(
-        "% of chart slots held by the top 10 artists, by country (2017 to 2021)."
+        "% of chart slots held by the top 10 artists, by country (2017 to 2021). "
+        f"Your selection (**{selected_country}**) is highlighted with an arrow."
     )
     
     # Same chart logic as in the notebook
@@ -148,6 +149,19 @@ with tab1:
         textfont=dict(size=10, color="black"),
     )
     fig1.update_layout(plot_bgcolor="white", margin=dict(l=10, r=100, t=20, b=40))
+    
+    # Add an arrow pointing at the selected country
+    if selected_country in q1_chart["region"].values:
+        country_pct = q1_chart.loc[q1_chart["region"] == selected_country, "pct_from_top10"].iloc[0]
+        fig1.add_annotation(
+            x=country_pct,
+            y=selected_country,
+            text=f"  ← {selected_country}",
+            showarrow=False,
+            font=dict(size=13, color="black", family="Arial Black"),
+            xanchor="left",
+            xshift=40,
+        )
     
     st.plotly_chart(fig1, use_container_width=True)
 
