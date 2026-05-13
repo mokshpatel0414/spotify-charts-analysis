@@ -1,9 +1,5 @@
 # Project-specific ignores
-data/*
-!data/.gitkeep
-
-# Streamlit secrets
-.streamlit/secrets.toml
-
-# OS
-Thumbs.db
+# Ignore the huge raw Kaggle CSV and the DuckDB database file
+data/charts.csv
+data/spotify.duckdb
+data/spotify.duckdb.wal
