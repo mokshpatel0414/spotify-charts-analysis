@@ -1,10 +1,9 @@
-# Spotify Charts: A Cross-Market Analysis (2017-2023)
+# Spotify Charts: A Cross-Market Analysis (2017-2021)
 
 A SQL-driven analysis of how music consumption differs across 70+ countries,
 using 26 million Spotify chart entries from 2017 to 2021.
 
-**Status:** in progress. The SQL analysis is complete. Visualizations and a
-Streamlit dashboard are coming next.
+**Live demo:** [spotify-charts-mokshpatel.streamlit.app](https://spotify-charts-mokshpatel.streamlit.app/)
 
 ## Headline Finding
 
@@ -21,7 +20,9 @@ combined topped 28 countries with no geographic overlap. Drake, often
 assumed to be a global force, was the most-charting artist in just one
 country: Canada.
 
-## Findings Summary
+![World map of top-charting artist per country](charts/03_artist_dominance.png)
+
+## Findings
 
 ### Q1: Market concentration
 For each country I measured what share of all top-200 chart slots over five
@@ -33,6 +34,8 @@ countries cluster their listening around fewer artists. Western European
 markets blend domestic and international music broadly. The Japan-vs-Netherlands
 gap is roughly **2.6x**.
 
+![Market concentration by country](charts/01_market_concentration.png)
+
 ### Q2: Song lifecycle and the streaming-era acceleration
 For US #1 hits between 2017 and 2021 I tracked how long each song took to
 reach #1, how long it stayed there, and how long it lingered on the chart.
@@ -40,6 +43,8 @@ reach #1, how long it stayed there, and how long it lingered on the chart.
 down to 5.7 days), and total chart lifespan has halved (452 days down to 199
 days)**. The streaming-era hypothesis that hits are quicker to peak and
 quicker to die out is real and it shows up cleanly in the data.
+
+![Song lifecycle by era](charts/02_song_lifecycle.png)
 
 ### Q3: Single-artist dominance per country
 For each country I found the most-charting artist and what share of the
@@ -57,13 +62,15 @@ those countries across five years.
   a laptop)
 - **Source:** [Spotify Charts on Kaggle](https://www.kaggle.com/datasets/dhruvildave/spotify-charts), 26.2M rows
 - **SQL editor:** VS Code with the Jupyter extension
-- **Visualization:** Plotly and Streamlit, coming next
+- **Visualization:** Plotly for interactive charts, Streamlit for the deployed dashboard
+- **Hosting:** Streamlit Community Cloud (free public hosting)
 
 ## Repository Structure
 
 ```
 spotify-charts-analysis/
 ├── README.md                           this file
+├── requirements.txt                    Python dependencies for the dashboard
 ├── .gitignore                          excludes the 3GB CSV
 ├── sql/
 │   ├── 00_data_quality_notes.md        documented filtering decisions
@@ -76,9 +83,17 @@ spotify-charts-analysis/
 │   ├── 02_song_lifecycle_by_era.csv
 │   └── 03_artist_dominance.csv
 ├── notebooks/
-│   └── 01_data_loading.ipynb           query runner
-├── app/                                streamlit dashboard, coming soon
-└── charts/                             plotly exports, coming soon
+│   ├── 01_data_loading.ipynb           query runner
+│   └── 02_visualizations.ipynb         chart generation
+├── app/
+│   └── streamlit_app.py                deployed dashboard
+└── charts/
+    ├── 01_market_concentration.html    interactive Plotly versions
+    ├── 02_song_lifecycle.html
+    ├── 03_artist_dominance.html
+    ├── 01_market_concentration.png     static PNGs for this README
+    ├── 02_song_lifecycle.png
+    └── 03_artist_dominance.png
 ```
 
 ## SQL techniques demonstrated
@@ -138,9 +153,9 @@ Two documented decisions, both with notes in
 - [x] Q1: Market concentration by country
 - [x] Q2: Song lifecycle and the streaming-era acceleration
 - [x] Q3: Single-artist dominance per country
-- [ ] Plotly visualizations for each finding
-- [ ] Streamlit dashboard with country-level explorer (deployed live URL)
-- [ ] Final writeup with embedded charts in this README
+- [x] Plotly visualizations for each finding
+- [x] Streamlit dashboard with country-level explorer
+- [x] Deployed to Streamlit Community Cloud
 
 ### Future extensions
 
@@ -163,7 +178,9 @@ Two documented decisions, both with notes in
 3. Open `notebooks/01_data_loading.ipynb` in VS Code (with the Jupyter
    extension) and run all cells. The notebook will load the CSV into a
    DuckDB database file (`data/spotify.duckdb`) and run all three queries.
-4. Results land as CSVs in `data/`.
+4. Run `notebooks/02_visualizations.ipynb` to generate the Plotly charts.
+5. To run the dashboard locally:
+   `pip install -r requirements.txt` then `streamlit run app/streamlit_app.py`.
 
 The full data import takes about a minute on a modern SSD. After that, each
 query against the DuckDB table runs in 1-3 seconds.
